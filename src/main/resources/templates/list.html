@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Registrations</title>
+    </head>
+    <body>
+        <h1>Event registration list</h1>
+        <table>
+            <tr><th>Name</th><th>Address</th></tr>
+            <tr th:each="signup : ${signups}">
+                <td th:text="${signup.name}">Name</td>
+                <td th:text="${signup.address}">Address</td>
+            </tr>
+        </table>
+        <ul>
+            <li><a th:href="@{/form}">Back to form</a></li>
+            <li><a th:href="@{/edit}">Edit list</a></li>
+        </ul>
+    </body>
+</html>
+
