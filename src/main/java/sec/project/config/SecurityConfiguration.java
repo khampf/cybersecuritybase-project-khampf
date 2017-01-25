@@ -10,13 +10,41 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import sec.project.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+    
+    @Autowired private UserRepository userRepository;
+    
     @Autowired
     private UserDetailsService userDetailsService;
+
+    /*     @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsServiceBean());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
+    }
+*/
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsServiceBean());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
+    }
+    
+    @Bean
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return new CustomUserDetailsService(userRepository);
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -40,14 +68,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

@@ -4,15 +4,31 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import sec.project.repository.UserRepository;
 
-@Service
+//@Service
+@Transactional
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
+
+    private UserRepository userRepository;
+    
+    public CustomUserDetailsService(UserRepository userRepository){
+        this.userRepository=userRepository;
+    }
+    
+    // this will be removed
     private Map<String, String> accountDetails;
 
     @PostConstruct
