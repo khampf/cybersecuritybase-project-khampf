@@ -16,6 +16,10 @@
             <li><a th:href="@{/form}">Back to form</a></li>
             <li><a th:href="@{/edit}">Edit list</a></li>
         </ul>
+        <p th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</p>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
     </body>
 </html>
 

@@ -21,13 +21,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // no real security at the moment
-        http.authorizeRequests()
-                .anyRequest().permitAll();
+        // http
+                // .anyRequest().permitAll();
+
+        // decide who can see registrations
+        http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
+        http
+            .authorizeRequests()
+                .antMatchers("/", "/form", "/done").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+            .logout()
+                .permitAll();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }
 
     @Bean

@@ -56,12 +56,24 @@ public class SignupController {
         return "list";
     }
     
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loadLists() {
-        return "loginx";
+    public String login() {
+        return "login";
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String loginPost() {
+        return "login";
+    }
 
+    /*
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest req) {
+        req.setAttribute("logout","1");
+        return "login";
+    }
+*/
     // Exception handling methods
 
     // Total control - setup a model and return the view name yourself. Or
