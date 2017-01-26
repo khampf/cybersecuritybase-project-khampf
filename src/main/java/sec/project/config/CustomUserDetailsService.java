@@ -4,11 +4,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sec.project.domain.Role;
 import sec.project.domain.User;
 import sec.project.repository.UserRepository;
@@ -18,6 +20,8 @@ import sec.project.repository.UserRepository;
 public class CustomUserDetailsService implements UserDetailsService {
 
     // private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
+    @Autowired 
+    private BCryptPasswordEncoder passwordEncoder;
 
     private UserRepository userRepository;
     // private RoleRepository roleRepository;
@@ -66,7 +70,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             userRepository.save(user);
             
             // admin/admin
-            user = new User("admin", "$2y$13$r1dFHQnwiNTTJ3qL1uiEQOU1UPdJokJjj2IVCtMhTAs/C/usXBTlu");
+            // String password = passwordEncoder.encode("admin");
+            user = new User("admin", "$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS");
             user.addRole(new Role("USER"));
             user.addRole(new Role("ADMIN"));
             userRepository.save(user);
@@ -74,7 +79,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             // User user = new User("admin","admin","USER");
             // userRepository.save(user);
         }
+
         System.out.println("DEBUG: users = " + userRepository.count());
+
         try {
             User user = userRepository.findByName(username);
             if (user == null) {
@@ -84,7 +91,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 throw new UsernameNotFoundException("User null not found");
             }
             // LOGGER.debug(" user from username " + user.toString());
-            System.out.println("DEBUG: user from username " + user.getName() + " with password " + user.getPassword());
+            System.out.println("DEBUG: user from username " + user.toString() + " with password " + user.getPassword());
             return new org.springframework.security.core.userdetails.User(
                     user.getName(),
                     user.getPassword(),

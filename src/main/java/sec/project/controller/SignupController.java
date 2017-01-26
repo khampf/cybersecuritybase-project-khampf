@@ -56,7 +56,15 @@ public class SignupController {
         return "list";
     }
     
-
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String editLists(Model model) {
+        model.addAttribute("signups", signupRepository.findAll());
+        
+        // but what about a native query?
+        
+        return "edit";
+    }
+    
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "login";

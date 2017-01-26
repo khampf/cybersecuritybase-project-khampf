@@ -82,4 +82,9 @@ public class User implements Serializable {
     public void addRole(Role role) {
         this.roles.add(role);
     }
+    
+    @Override
+    public String toString() {
+        return "id=" + this.id + " name=" + this.name + " roles=" + this.roles.toString();
+    }
 }
