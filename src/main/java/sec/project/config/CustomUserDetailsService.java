@@ -39,6 +39,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         //this.accountDetails = new TreeMap<>();
         // this.accountDetails.put("ted", "$2a$06$rtacOjuBuSlhnqMO2GKxW.Bs8J6KI0kYjw/gtF0bfErYgFyNTZRDm");
         //this.accountDetails.put("ted", "$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS"); // president
+        
+        if (userRepository.count() == 0) {
+            // no users in userdb - add default administrator
+            // User user = new User("ted", "$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS");
+            User user = new User("admin","admin");
+            user.addRole(new Role("ROLE_ADMIN"));
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -57,14 +65,14 @@ public class CustomUserDetailsService implements UserDetailsService {
                 Arrays.asList(new SimpleGrantedAuthority("USER")));
     }*/
         try {
-            User user = userRepository.findByUsername(username);
+            User user = userRepository.findByName(username);
             if (user == null) {
                 LOGGER.debug("no user found by that username");
                 return null;
             }
             LOGGER.debug(" user from username " + user.toString());
             return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
+                    user.getName(),
                     user.getPassword(),
                     getAuthorities(user)
             );

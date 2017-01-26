@@ -7,5 +7,5 @@ import sec.project.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     
-    public User findByUsername(String username);
+    public User findByName(String name);
 }

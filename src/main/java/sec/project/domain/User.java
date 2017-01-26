@@ -11,7 +11,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String username;
+    private String name;
 
     private String password;
 
@@ -26,19 +26,19 @@ public class User {
         super();
     }
     
-    public User(String username, String password) {
+    public User(String name, String password) {
         this();
-        this.username = username;
+        this.name = name;
         this.password = password;
     }
     
     // Getters and setters
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -51,5 +51,9 @@ public class User {
     
     public Set<Role> getRoles() {
         return roles;
+    }
+    
+    public void addRole(Role role) {
+        roles.add(role);
     }
 }
