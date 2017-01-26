@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import sec.project.domain.Role;
 import sec.project.domain.User;
-import sec.project.repository.RoleRepository;
 import sec.project.repository.UserRepository;
 
 //@Service
@@ -21,11 +20,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     // private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    // private RoleRepository roleRepository;
     
-    public CustomUserDetailsService(UserRepository userRepository, RoleRepository roleRepository){
+    public CustomUserDetailsService(UserRepository userRepository) { // , RoleRepository roleRepository){
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        // this.roleRepository = roleRepository;
     }
     
     // this will be removed
@@ -58,9 +57,22 @@ public class CustomUserDetailsService implements UserDetailsService {
     }*/
         if (userRepository.count() == 0) {
             // no users in userdb - add default administrator
-            User user = new User("ted", "$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS", "USER");
-            // User user = new User("admin","admin","USER");
+            // php -r "echo password_hash('admin', PASSWORD_BCRYPT, ['cost' => 13]) . PHP_EOL;"
+            
+            
+            // ted/president
+            User user = new User("ted", "$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS");
+            user.addRole(new Role("USER"));
             userRepository.save(user);
+            
+            // admin/admin
+            user = new User("admin", "$2y$13$r1dFHQnwiNTTJ3qL1uiEQOU1UPdJokJjj2IVCtMhTAs/C/usXBTlu");
+            user.addRole(new Role("USER"));
+            user.addRole(new Role("ADMIN"));
+            userRepository.save(user);
+            
+            // User user = new User("admin","admin","USER");
+            // userRepository.save(user);
         }
         System.out.println("DEBUG: users = " + userRepository.count());
         try {
@@ -86,7 +98,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private Set<GrantedAuthority> getAuthorities(User user) {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
         for(Role role : user.getRoles()) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getRole());
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
             authorities.add(grantedAuthority);
         }
         // LOGGER.debug("user authorities are " + authorities.toString());

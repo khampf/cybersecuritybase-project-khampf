@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import sec.project.repository.RoleRepository;
 import sec.project.repository.UserRepository;
 
 @Configuration
@@ -20,8 +19,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserRepository userRepository;
     
-    @Autowired
-    private RoleRepository roleRepository;
+/*    @Autowired
+    private RoleRepository roleRepository; */
     
 //    @Autowired
 //    private UserDetailsService userDetailsService;
@@ -46,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // @Bean
     @Override
     public UserDetailsService userDetailsServiceBean() throws Exception {
-        return new CustomUserDetailsService(userRepository, roleRepository);
+        return new CustomUserDetailsService(userRepository); //, roleRepository);
     }
     
     @Bean

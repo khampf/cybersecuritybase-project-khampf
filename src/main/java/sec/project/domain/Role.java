@@ -12,7 +12,7 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String role;
+    private String name;
 
 /*    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     private Set<User> users;
@@ -22,16 +22,16 @@ public class Role implements Serializable {
         super();
     }
     
-    public Role(String role) {
-        this.role = role;
+    public Role(String name) {
+        this.name = name;
     }
     
     // Getters and setters
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
     
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 }

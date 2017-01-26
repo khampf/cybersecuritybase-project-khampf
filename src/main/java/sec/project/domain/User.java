@@ -1,8 +1,11 @@
 package sec.project.domain;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import sec.project.domain.Role;
 
 @Entity
@@ -32,12 +35,22 @@ public class User implements Serializable {
         this();
         this.name = name;
         this.password = password;
+        this.roles = new HashSet<>();
     }
     
-    public User(String name, String password, String role) {
+    public User(String name, String password, Role role) {
         this();
         this.name = name;
         this.password = password;
+        this.roles = new HashSet<>();
+        this.roles.add(role);        
+    }
+    
+    public User(String name, String password, Set<Role> roles) {
+        this();
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
         // this.roles.add(new Role(role)); // This fails. Look at docs.
     }
     
@@ -61,8 +74,12 @@ public class User implements Serializable {
     public Set<Role> getRoles() {
         return roles;
     }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
     
     public void addRole(Role role) {
-        roles.add(role);
+        this.roles.add(role);
     }
 }
