@@ -3,10 +3,11 @@ package sec.project.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import sec.project.domain.Signup;
+import sec.project.domain.Role;
 
 @Repository
-public interface SignupRepository extends JpaRepository<Signup, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    
     @Autowired
-    public Signup findByName(String name);
+    public Role findByName(String name);
 }

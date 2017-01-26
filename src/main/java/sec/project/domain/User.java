@@ -1,11 +1,13 @@
 package sec.project.domain;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
 import sec.project.domain.Role;
 
 @Entity
-public class User {
+@Table(name = "users")
+public class User implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,6 +32,13 @@ public class User {
         this();
         this.name = name;
         this.password = password;
+    }
+    
+    public User(String name, String password, String role) {
+        this();
+        this.name = name;
+        this.password = password;
+        // this.roles.add(new Role(role)); // This fails. Look at docs.
     }
     
     // Getters and setters

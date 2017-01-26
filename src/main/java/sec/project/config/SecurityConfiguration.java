@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import sec.project.repository.RoleRepository;
 import sec.project.repository.UserRepository;
 
 @Configuration
@@ -19,14 +20,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserRepository userRepository;
     
+    @Autowired
+    private RoleRepository roleRepository;
+    
 //    @Autowired
 //    private UserDetailsService userDetailsService;
 
-/*    @Autowired
+    /*@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // just enabled this again without really knowing why...
-        auth.userDetailsService(userDetailsServiceBean()); 
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        // auth.userDetailsService(userDetailsServiceBean()); 
+        // auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
         // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }*/
 
@@ -35,15 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
     //public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceBean());
-        // auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        //auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
         // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }
     
     // @Bean
     @Override
     public UserDetailsService userDetailsServiceBean() throws Exception {
-        return new CustomUserDetailsService(userRepository);
+        return new CustomUserDetailsService(userRepository, roleRepository);
     }
     
     @Bean

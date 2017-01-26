@@ -1,10 +1,12 @@
 package sec.project.domain;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-public class Role {
+@Table(name = "roles")
+public class Role implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,9 +14,9 @@ public class Role {
 
     private String role;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
+/*    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     private Set<User> users;
-    
+ */   
     // Constructors
     public Role() {
         super();
