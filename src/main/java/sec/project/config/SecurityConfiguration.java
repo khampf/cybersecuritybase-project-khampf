@@ -58,6 +58,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/", "/form", "/done").permitAll()
+                .antMatchers("/list").hasAuthority("USER")  // possible exploit if single page
+                .antMatchers("/edit").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()

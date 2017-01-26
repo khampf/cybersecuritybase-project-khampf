@@ -21,5 +21,35 @@ public class User {
     @JoinTable(joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    // Constructors
+    public User() {
+        super();
+    }
+    
+    public User(String username, String password) {
+        this();
+        this.username = username;
+        this.password = password;
+    }
+    
     // Getters and setters
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public Set<Role> getRoles() {
+        return roles;
+    }
 }
