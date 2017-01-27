@@ -3,6 +3,11 @@ package sec.project.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.encoding.BaseDigestPasswordEncoder;
+import org.springframework.security.authentication.encoding.BasePasswordEncoder;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
+import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     //@Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
     //public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceBean());
+        // auth.userDetailsService(userDetailsServiceBean());
         auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
         // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }
@@ -48,11 +53,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new CustomUserDetailsService(userRepository); //, roleRepository);
     }
     
-    @Bean
+/*    @Bean
+    public PlaintextPasswordEncoder passwordEncoder(){
+        return new PlaintextPasswordEncoder();
+    }
+*/
+
+/*    @Bean
+    public Md5PasswordEncoder passwordEncoder(){
+        return new Md5PasswordEncoder();
+    }
+*/
+  @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // no real security at the moment
