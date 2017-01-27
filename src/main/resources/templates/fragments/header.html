@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Header template</title>
+        
+    </head>
+    <body>
+        
+        <header th:fragment="header">
+            <style>
+                ul.menulist {
+                    display: flex;
+                    list-style:none;
+                    float: left;
+                    padding-right: 10px;
+                }
+                ul.menulist li {
+                    padding-left: 5px;
+                }
+            </style>
+            
+            <ul class ="menulist">
+                <li th:if="${#httpServletRequest.remoteUser}">Logged in as <span th:text="${#httpServletRequest.remoteUser}">[[${#httpServletRequest.remoteUser}]]</span>: </li>
+                <li th:unless="${#httpServletRequest.remoteUser}">Viewing as guest: </li>
+                <li><a th:href="@{/form}">form</a></li>
+                <li><a th:href="@{/list}">list</a></li>
+                <li><a th:href="@{/edit}">edit</a></li>
+            </ul>
+            <div th:if="${#httpServletRequest.remoteUser}">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out"/>
+                </form>
+            </div>
+            <hr style="clear: both;"/>
+        </header>
+    </body>
+</html>

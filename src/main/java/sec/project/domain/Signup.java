@@ -4,6 +4,7 @@ import javax.persistence.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
+@Table(name = "signup")
 public class Signup extends AbstractPersistable<Long> {
 
     @Id

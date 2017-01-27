@@ -5,6 +5,10 @@
         <title>Spring Security Example </title>
     </head>
     <body>
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        <h1>Backend login</h1>
         <div th:if="${param.error}">
             <p>Invalid username and password.</p>
         </div>

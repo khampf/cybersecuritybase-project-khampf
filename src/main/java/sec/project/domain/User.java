@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import sec.project.domain.Role;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User implements Serializable {
     
     @Id

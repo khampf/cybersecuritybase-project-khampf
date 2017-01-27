@@ -4,7 +4,10 @@
         <title>Sign up form</title>
     </head>
     <body>
-
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        
         <h1>Sign up to the event using this form</h1>
 
         <form action="#" th:action="@{/form}" method="POST">

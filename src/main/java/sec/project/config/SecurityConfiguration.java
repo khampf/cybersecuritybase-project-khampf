@@ -78,10 +78,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // decide who can see registrations
         http.csrf().disable();
-        http.headers().frameOptions().sameOrigin();
+        // http.headers().frameOptions().sameOrigin();
+        http.headers().frameOptions().disable();
+ 
         http
             .authorizeRequests()
-                .antMatchers("/", "/form", "/done").permitAll()
+                .antMatchers("/", "/form", "/done", "/console/**", "/h2-console/**").permitAll()
                 .antMatchers("/list").hasAuthority("USER")  // possible exploit if single page
                 .antMatchers("/edit").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
@@ -93,5 +95,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logout()
                 .permitAll();
     }
-
 }
