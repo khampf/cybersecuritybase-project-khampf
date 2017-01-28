@@ -4,6 +4,9 @@
         <title>Registrations</title>
     </head>
     <body>
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
         <h1>Editable event registration list</h1>
         <table>
             <tr><th>Name</th><th>Address</th></tr>
@@ -12,14 +15,6 @@
                 <td th:text="${signup.address}">Address</td>
             </tr>
         </table>
-        <ul>
-            <li><a th:href="@{/form}">Back to form</a></li>
-            <li><a th:href="@{/edit}">Edit list</a></li>
-        </ul>
-        <p th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</p>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
     </body>
 </html>
 

@@ -8,5 +8,5 @@ import sec.project.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Autowired
-    public User findByName(String name);
+    public User findByUsername(String username);
 }

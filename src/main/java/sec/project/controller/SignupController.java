@@ -44,10 +44,10 @@ public class SignupController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String loadLists(Model model) {
         // initialize with some signups if the repository is empty
-        if (signupRepository.count() == 0) {
+/*        if (signupRepository.count() == 0) {
             signupRepository.save(new Signup("Donald Duck", "donald.duck@disney.com"));
             signupRepository.save(new Signup("Donald Trump", "donald.trump@whitehouse.gov"));
-        }
+        } */
         // the "normal" way
         model.addAttribute("signups", signupRepository.findAll());
         

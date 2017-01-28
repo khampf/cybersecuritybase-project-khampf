@@ -21,37 +21,35 @@ import sec.project.repository.UserRepository;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
-    @Autowired
-    private UserRepository userRepository;
-    
-/*    @Autowired
-    private RoleRepository roleRepository; */
-    
-//    @Autowired
-//    private UserDetailsService userDetailsService;
-
     /*@Autowired
+    private UserRepository userRepository; */
+    
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // just enabled this again without really knowing why...
         // auth.userDetailsService(userDetailsServiceBean()); 
-        // auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
         // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-    }*/
+    }
 
-    @Override
+//    @Override
     //@Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
     //public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // auth.userDetailsService(userDetailsServiceBean());
-        auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
+        
         // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-    }
+ //       auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
+ //   }
     
     // @Bean
-    @Override
+/*    @Override
     public UserDetailsService userDetailsServiceBean() throws Exception {
-        return new CustomUserDetailsService(userRepository); //, roleRepository);
-    }
+        return new CustomUserDetailsService();
+    } */
     
 /*    @Bean
     public PlaintextPasswordEncoder passwordEncoder(){

@@ -1,37 +1,56 @@
 package sec.project.domain;
 
-import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Table(name = "role")
-public class Role implements Serializable {
+public class Role extends AbstractPersistable<Long> {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long Id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "RoleName_ID")
+    private RoleName roleName;
 
-/*    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "User", cascade = CascadeType.ALL)
     private Set<User> users;
- */   
-    // Constructors
+
+     // Constructors
     public Role() {
         super();
     }
     
-    public Role(String name) {
-        this.name = name;
+    public Role(RoleName roleName) {
+        this.roleName = roleName;
     }
     
     // Getters and setters
-    public String getName() {
-        return name;
+    public RoleName getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(RoleName roleName) {
+        this.roleName = roleName;
     }
     
-    public void setName(String name) {
-        this.name = name;
+/*    public String getName() {
+        return roleName.getName();
     }
+    
+    public void setName(String rolename) {
+        this.roleName.setName(rolename);
+    }*/
+/*    
+    public Set<User> getUsers() {
+        return users;
+    }
+    
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+*/
 }
