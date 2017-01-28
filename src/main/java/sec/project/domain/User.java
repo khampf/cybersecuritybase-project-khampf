@@ -3,7 +3,9 @@ package sec.project.domain;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import sec.project.repository.RoleRepository;
 
 @Entity
 @Table(name = "user")
@@ -26,22 +28,35 @@ public class User extends AbstractPersistable<Long> {
     //@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     
     @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(
+        name = "user_role",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private Set<Role> roles;
+    
+    /*
+        @ManyToMany
+    @JoinTable(
+        name = "roles_privileges",
+        joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    */
     
     // Constructors
     public User() {
         super();
     }
     
-    public User(String name, String password) {
+    public User(String username, String password) {
         this();
         this.username = username;
         this.password = password;
         this.roles = new HashSet<>();
     }
     
-    public User(String name, String password, Role role) {
+/*    public User(String name, String password, Role role) {
         this();
         this.username = username;
         this.password = password;
@@ -54,7 +69,7 @@ public class User extends AbstractPersistable<Long> {
         this.username = username;
         this.password = password;
         this.roles = roles;
-    }
+    } */
     
     // Getters and setters
     public Long getId() {
@@ -97,31 +112,13 @@ public class User extends AbstractPersistable<Long> {
         this.roles = roles;
     }
     
-    /* public void addRole(Role role) {
-        for (Role hasrole : roles) {
-            if (hasrole.getName().equals(role.getName())) {
-                return;
-            }
-        }
+    public void addRole(Role role) {
         roles.add(role);
-    } */
-    
-/*    public void addRole(String rolename) {
-        for (Role role : roles) {
-            if (role.getName().equals(rolename)) {
-                return;
-            }
-        }
-        roles.add(new Role(rolename));
     }
-  */  
-    /* public void addRoleByName(String rolename) {
-        Role role = roleRepository.findByRolename(rolename);
-        if (role == null) {
-            role = new Role(rolename);
-            roleRepository.save(role);
-        }
-    } */
+    
+    public void removeRole(Role role) {
+        roles.remove(role);
+    }
     
     @Override
     public String toString() {

@@ -8,5 +8,5 @@ import sec.project.domain.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
     @Autowired
-    public Role findByRolename(String rolename);
+    public Role findByName(String name);
 }

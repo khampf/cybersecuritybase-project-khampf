@@ -1,5 +1,7 @@
 package sec.project.domain;
 
+import java.security.acl.Permission;
+import java.util.Collection;
 import java.util.Set;
 import javax.persistence.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -10,47 +12,69 @@ public class Role extends AbstractPersistable<Long> {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long Id;
+    private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "RoleName_ID")
-    private RoleName roleName;
-
-    @OneToMany(mappedBy = "User", cascade = CascadeType.ALL)
-    private Set<User> users;
-
+    private String name;
+    
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> userRoles;
+    
      // Constructors
     public Role() {
         super();
     }
     
-    public Role(RoleName roleName) {
-        this.roleName = roleName;
+    public Role(String name) {
+        this.name = name;
     }
     
     // Getters and setters
-    public RoleName getRoleName() {
-        return roleName;
+    public Long getId() {
+        return id;
     }
 
-    public void setRoleName(RoleName roleName) {
-        this.roleName = roleName;
+    public void setId(Long id) {
+        this.id = id;
     }
     
-/*    public String getName() {
-        return roleName.getName();
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
-    public void setName(String rolename) {
-        this.roleName.setName(rolename);
-    }*/
-/*    
-    public Set<User> getUsers() {
-        return users;
+    public Set<User> getUserRoles() {
+        return userRoles;
     }
-    
-    public void setUsers(Set<User> users) {
-        this.users = users;
+
+    public void setUserRoles(Set<User> userRoles) {
+        this.userRoles = userRoles;
     }
-*/
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Role role = (Role) obj;
+        if (!role.equals(role.name)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Role [name=").append(name).append("]").append("[id=").append(id).append("]");
+        return builder.toString();
+    }
 }

@@ -31,9 +31,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         super();
     }
     
-    /*public CustomUserDetailsService(UserRepository userRepository) { // , RoleRepository roleRepository){
+    /* public CustomUserDetailsService(UserRepository userRepository) { // , RoleRepository roleRepository){
         this.userRepository = userRepository;
-    }*/
+    } */
     
     // private Md5PasswordEncoder passwordEncoder;
     
@@ -43,11 +43,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @PostConstruct
     public void init() {
         System.out.println("DEBUG: CustomUserDetailsService() started with " + userRepository.count() + " pre-existing users");
-/*        User user = new User("admin", "$2a$10$VlQHfbbJdEH.Q2jcEfufn.e32mGCnKFGXooxS1s6xMEM7u6/3zHr.");
-        user.setEnabled(true);
-        user.addRole("USER");
-        user.addRole("ADMIN");
-        userRepository.save(user); */
     }
 /*    @PostConstruct
     public void init() {
