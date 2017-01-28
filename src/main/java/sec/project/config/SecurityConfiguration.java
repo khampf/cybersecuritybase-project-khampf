@@ -84,7 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/", "/form", "/done", "/console/**", "/h2-console/**").permitAll()
                 .antMatchers("/list").hasAuthority("USER")  // possible exploit if single page
-                .antMatchers("/edit").hasAuthority("ADMIN")
+                .antMatchers("/edit", "/users").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -92,6 +92,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .logout()
-                .permitAll();
+                .permitAll()
+                .and()
+            .exceptionHandling().accessDeniedPage("/403");
     }
 }

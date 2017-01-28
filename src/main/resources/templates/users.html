@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Registrations</title>
+    </head>
+    <body>
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        <h1>Event registration list</h1>
+        <table>
+            <tr><th>Id</th><th>Username</th><th>Password</th><th>Enabled</th></tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}">Id</td>
+                <td th:text="${user.username}">Username</td>
+                <td th:text="${user.password}">Password</td>
+                <td th:text="${user.roles}">Roles</td>
+            </tr>
+        </table>
+    </body>
+</html>
+

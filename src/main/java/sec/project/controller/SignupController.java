@@ -42,6 +42,11 @@ public class SignupController {
         return "redirect:/form";
     }
 
+    @RequestMapping(value = "/403", method = RequestMethod.GET)
+    public String accessDenied() {
+        return "403";
+    }
+
     @RequestMapping(value = "/form", method = RequestMethod.GET)
     public String loadForm() {
         return "form";
@@ -80,22 +85,13 @@ public class SignupController {
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
+        // if there are no users add admin/admin with USER and ADMIN authorities
         if (userRepository.count() == 0) {
             User user = new User("admin", "$2a$10$VlQHfbbJdEH.Q2jcEfufn.e32mGCnKFGXooxS1s6xMEM7u6/3zHr.");
             user.setEnabled(true);
             user.addRole(roleRepository.findByName("USER"));
             user.addRole(roleRepository.findByName("ADMIN"));
             userRepository.save(user);
-            
-/*            user = new User("ted", "$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS");
-            user.setEnabled(true);
-            user.addRole(roleRepository.findByName("USER"));
-            userRepository.save(user);
-
-            user = new User("disabled", "$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS");
-            user.setEnabled(false);
-            user.addRole(roleRepository.findByName("USER"));
-            userRepository.save(user); */
         }
         return "login";
     }
@@ -103,6 +99,12 @@ public class SignupController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginPost() {
         return "login";
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String users(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        return "users";
     }
 
     /*
