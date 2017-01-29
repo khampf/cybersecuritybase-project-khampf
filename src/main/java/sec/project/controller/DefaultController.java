@@ -19,6 +19,7 @@ import sec.project.repository.SignupRepository;
 import sec.project.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Transactional
@@ -72,7 +73,7 @@ public class DefaultController {
 
     @RequestMapping(value = "/view/{itemId}", method = RequestMethod.DELETE)
     public String remove(@PathVariable Long itemId, Model model) {
-        logger.info("deleting user with id=" + itemId);
+        logger.info("deleting signup with id=" + itemId);
         signupRepository.delete(itemId);
         return "redirect:/view?edit";
     }
@@ -101,7 +102,12 @@ public class DefaultController {
         model.addAttribute("users", userRepository.findAll());
         return "users";
     }
-
+    
+    @RequestMapping(value = "/dumpdb", method = RequestMethod.GET)
+    @ResponseBody
+    public String dumpdb() {
+        return "Yeah";
+    }
     // Exception handling methods
 
     // Total control - setup a model and return the view name yourself. Or

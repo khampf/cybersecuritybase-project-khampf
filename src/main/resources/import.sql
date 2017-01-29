@@ -1,20 +1,32 @@
--- PlaintextPasswordEncoded
-INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin','admin', true);
-INSERT INTO User (id, username, password, enabled) VALUES (2, 'ted','president', true);
-INSERT INTO User (id, username, password, enabled) VALUES (3, 'disabled','disabled', false);
+-- PlaintextPasswordEncoder
+-- INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin','admin', true);
+-- INSERT INTO User (id, username, password, enabled) VALUES (2, 'ted','ted', true);
+-- INSERT INTO User (id, username, password, enabled) VALUES (2, 'president','president', true);
+-- INSERT INTO User (id, username, password, enabled) VALUES (3, 'disabled','disabled', false);
 
--- BCryptPasswordEncoded
--- INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin','$2a$10$VlQHfbbJdEH.Q2jcEfufn.e32mGCnKFGXooxS1s6xMEM7u6/3zHr.', true);
--- INSERT INTO User (id, username, password, enabled) VALUES (2, 'ted','$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS', true);
--- INSERT INTO User (id, username, password, enabled) VALUES (3, 'disabled','$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS', false);
+-- MD5PasswordEncoder
+-- INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin','21232f297a57a5a743894a0e4a801fc3', true);
+-- INSERT INTO User (id, username, password, enabled) VALUES (2, 'ted','870fa8ee962d90af50c7eaed792b075a', true);
+-- INSERT INTO User (id, username, password, enabled) VALUES (3, 'president','c8d56be998c94089ea6e1147dc9253c1', true);
+-- INSERT INTO User (id, username, password, enabled) VALUES (4, 'disabled','075ae3d2fc31640504f814f60e5ef713', false);
+
+-- BCryptPasswordEncoder
+INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin','$2a$10$VlQHfbbJdEH.Q2jcEfufn.e32mGCnKFGXooxS1s6xMEM7u6/3zHr.', true);
+INSERT INTO User (id, username, password, enabled) VALUES (2, 'ted','$2a$06$rtacOjuBuSlhnqMO2GKxW.Bs8J6KI0kYjw/gtF0bfErYgFyNTZRDm', true);
+INSERT INTO User (id, username, password, enabled) VALUES (3, 'president', '$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS', true);
+INSERT INTO User (id, username, password, enabled) VALUES (4, 'disabled','$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS', false);
 
 INSERT INTO Role (id, name) VALUES (1, 'USER');
 INSERT INTO Role (id, name) VALUES (2, 'ADMIN');
+INSERT INTO Role (id, name) VALUES (3, 'EDIT');
 
 INSERT INTO User_Role (user_id, role_id) VALUES (1,1);
 INSERT INTO User_Role (user_id, role_id) VALUES (1,2);
+INSERT INTO User_Role (user_id, role_id) VALUES (1,3);
 INSERT INTO User_Role (user_id, role_id) VALUES (2,1);
 INSERT INTO User_Role (user_id, role_id) VALUES (3,1);
+INSERT INTO User_Role (user_id, role_id) VALUES (3,3);
+INSERT INTO User_Role (user_id, role_id) VALUES (4,1);
 
 INSERT INTO Signup (name, address) VALUES ('Donald Duck', 'donald.duck@disney.com');
 INSERT INTO Signup (name, address) VALUES ('Ronny Random', 'ronnie@random.net');
