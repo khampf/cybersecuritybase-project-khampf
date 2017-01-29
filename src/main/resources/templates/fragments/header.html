@@ -28,6 +28,10 @@
                 </li>
                 <li><a th:href="@{/form}">sign up</a></li>
                 <li th:unless="${#httpServletRequest.remoteUser}"><a th:href="@{/login}">login</a></li>
+
+<!--ISSUE 2: unsafe output, comment out below -->
+                <li sec:authorize="hasAuthority('USER')"><a th:href="@{/list}">raw list</a></li>
+
                 <li sec:authorize="hasAuthority('USER')"><a th:href="@{/view}">view signups</a></li>
                 <li sec:authorize="hasAuthority('EDIT')"><a th:href="@{/view?edit}">edit signups</a></li>
                 <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/users}">list users</a></li>

@@ -5,16 +5,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Arrays;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import sec.project.domain.Signup;
 import sec.project.domain.User;
@@ -26,6 +24,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.context.annotation.Bean;
+import org.apache.catalina.Context;
+import static org.h2.server.web.PageParser.escapeHtml;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatContextCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 
 @Controller
 @Transactional
@@ -67,12 +71,12 @@ public class DefaultController {
             Connection connection = DriverManager.getConnection("jdbc:h2:mem:mydb","sa","");
             
 
-// ISSUE 1: Unsafe query
+// ISSUE #1: Unsafe query comment out the 3 lines below and uncomment next block of code after
             String query = "INSERT INTO Signup (name, address) VALUES ('" + name + "', '" + address + "')";
             logger.info(query);
             connection.createStatement().execute(query);
           
-// ISSUE 1: Safer query by using parameterized queries
+// ISSUE #1: Safer query by using parameterized queries
 //            String query = "INSERT INTO Signup (name, address) VALUES (?, ?)";
 //            PreparedStatement pstmt = connection.prepareStatement( query );
 //            pstmt.setString( 1, name);
@@ -86,21 +90,50 @@ public class DefaultController {
             logger.error(t.getMessage());
         }
                 
-// ISSUE 1: even safer code by using built in repository code
+// ISSUE #1: even safer code by using built in repository code
+//           comment out the whole try { } catch {} block above and uncomment
+//           the following two lines
 //        logger.info("signupRepository.save(" + name + ", " + address + ")");
 //        signupRepository.save(new Signup(name, address));
 
         return "done";
     }
-    
-    // signup list view
-    @RequestMapping(value = "/view", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
     public String loadLists(Model model) {
-        // initialize with some signups if the repository is empty
-/*        if (signupRepository.count() == 0) {
-            signupRepository.save(new Signup("Donald Duck", "donald.duck@disney.com"));
-            signupRepository.save(new Signup("Donald Trump", "donald.trump@whitehouse.gov"));
-        } */
+    
+        StringBuilder content = new StringBuilder();
+        try {
+            // Open connection
+            Connection connection = DriverManager.getConnection("jdbc:h2:mem:mydb","sa","");
+            String name, address;
+            Set<Signup> signups;
+
+            String query = "SELECT * FROM Signup";
+            logger.info(query);
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            model.addAttribute("signups", resultSet);
+
+            // Do something with the results
+            while (resultSet.next()) {
+                name = resultSet.getString("name");
+                address = resultSet.getString("address");
+
+                content.append(name + " &lt;" + address + "&gt;<br/>\n");
+// ISSUE #3: comment out line above and uncomment line below for escaping HTML in String
+//                content.append(escapeHtml(name) + " &lt;" + escapeHtml(address) + "&gt;<br/>\n");
+            }
+            connection.close();
+        } catch (Throwable t) {
+            logger.error(t.getMessage());
+        }
+        content.append("\n<a href=\"/\">Return home</a>\n");
+        return content.toString();
+    }
+
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    public String viewSignups(Model model) {
         model.addAttribute("signups", signupRepository.findAll());
         return "view";
     }
@@ -137,7 +170,7 @@ public class DefaultController {
         return "users";
     }
     
-    @RequestMapping(value = "/dumpdb", method = RequestMethod.GET)
+    @RequestMapping(value = "/dumpusers", method = RequestMethod.GET)
     @ResponseBody
     public String dumpdb() {
         String query = "SELECT * FROM user";
@@ -165,6 +198,7 @@ public class DefaultController {
             logger.error(t.getMessage());
         }
         result.append("</pre>");
+// Used to quicly output encoded password        
 //        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 //        result.append(passwordEncoder.encode("disabled"));
         return result.toString();
@@ -182,5 +216,25 @@ public class DefaultController {
         mav.setViewName("error");
         return mav;
     }    
+// ISSUE #5 START: comment out from here to fix issue #5
+    @Bean
+    public TomcatContextCustomizer tomcatContextCustomizer() {
+        return new TomcatContextCustomizer() {
+            @Override
+            public void customize(Context context) {
+// ISSUE #4: session cookie value JSESSION is limited to values 00-FF. Change 1 to at least 8
+                context.getManager().getSessionIdGenerator().setSessionIdLength(1);
+                context.setUseHttpOnly(false);
+            }
+        };
+    }
+
+    @Bean
+    public TomcatEmbeddedServletContainerFactory tomcatContainerFactory() {
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+        factory.setTomcatContextCustomizers(Arrays.asList(new TomcatContextCustomizer[]{tomcatContextCustomizer()}));
+        return factory;
+    }
+// ISSUE #5 END
 }
 

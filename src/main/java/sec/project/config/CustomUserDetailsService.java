@@ -55,18 +55,4 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
     }
-            
-    // no users in userdb - add default administrator
-    // php -r "echo password_hash('admin', PASSWORD_BCRYPT, ['cost' => 13]) . PHP_EOL;"
-
-    // PasswordEncoder pe = new BCryptPasswordEncoder();
-    // System.out.println("TEST: admin = " + pe.encode("admin"));
-              
-   // ted/president
-//          User user = new User("ted", "president");
-//          User user = new User("ted", "c8d56be998c94089ea6e1147dc9253c1");
-//            User user = new User("ted", "$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS");
-//            user.addRole(new Role("USER"));
-//            userRepository.save(user);
-//        }
 }
