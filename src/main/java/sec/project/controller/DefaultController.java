@@ -1,6 +1,10 @@
 package sec.project.controller;
 
 import java.security.Principal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,8 @@ import sec.project.repository.SignupRepository;
 import sec.project.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -55,7 +61,35 @@ public class DefaultController {
 
     @RequestMapping(value = "/form", method = RequestMethod.POST)
     public String submitForm(@RequestParam String name, @RequestParam String address) {
-        signupRepository.save(new Signup(name, address));
+        
+        try {
+            // Open connection
+            Connection connection = DriverManager.getConnection("jdbc:h2:mem:mydb","sa","");
+            
+
+// ISSUE 1: Unsafe query
+            String query = "INSERT INTO Signup (name, address) VALUES ('" + name + "', '" + address + "')";
+            logger.info(query);
+            connection.createStatement().execute(query);
+          
+// ISSUE 1: Safer query by using parameterized queries
+//            String query = "INSERT INTO Signup (name, address) VALUES (?, ?)";
+//            PreparedStatement pstmt = connection.prepareStatement( query );
+//            pstmt.setString( 1, name);
+//            pstmt.setString( 2, address);
+//            pstmt.execute();
+//            logger.info(pstmt.toString());
+//            pstmt.close();
+
+            connection.close();
+        } catch (Throwable t) {
+            logger.error(t.getMessage());
+        }
+                
+// ISSUE 1: even safer code by using built in repository code
+//        logger.info("signupRepository.save(" + name + ", " + address + ")");
+//        signupRepository.save(new Signup(name, address));
+
         return "done";
     }
     
@@ -106,7 +140,34 @@ public class DefaultController {
     @RequestMapping(value = "/dumpdb", method = RequestMethod.GET)
     @ResponseBody
     public String dumpdb() {
-        return "Yeah";
+        String query = "SELECT * FROM user";
+        ResultSet resultSet;
+        StringBuilder result = new StringBuilder();
+        
+        result.append("<pre>");
+        try {
+            // Open connection
+            Connection connection = DriverManager.getConnection("jdbc:h2:mem:mydb","sa","");
+
+            // Query DB
+            resultSet = connection.createStatement().executeQuery(query);
+            
+            // Do something with the results
+            while (resultSet.next()) {
+                result.append("id=" + resultSet.getString("id"));
+                result.append("\t username=" + resultSet.getString("username"));
+                result.append("\t password=" + resultSet.getString("password"));
+                result.append("\n");
+            }
+            resultSet.close();
+            connection.close();
+        } catch (Throwable t) {
+            logger.error(t.getMessage());
+        }
+        result.append("</pre>");
+//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        result.append(passwordEncoder.encode("disabled"));
+        return result.toString();
     }
     // Exception handling methods
 

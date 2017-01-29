@@ -22,7 +22,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // auth.userDetailsService(userDetailsServiceBean()); 
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        
         // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
+        
     }
 
     // Some different passwordEncoders to choose from
@@ -66,6 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/view").hasAuthority("USER")
                 .antMatchers(HttpMethod.DELETE, "/view").hasAuthority("EDIT")
                 .antMatchers("/users").hasAuthority("ADMIN")
+                .antMatchers("/dumpdb").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()

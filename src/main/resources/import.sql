@@ -14,7 +14,7 @@
 INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin','$2a$10$VlQHfbbJdEH.Q2jcEfufn.e32mGCnKFGXooxS1s6xMEM7u6/3zHr.', true);
 INSERT INTO User (id, username, password, enabled) VALUES (2, 'ted','$2a$06$rtacOjuBuSlhnqMO2GKxW.Bs8J6KI0kYjw/gtF0bfErYgFyNTZRDm', true);
 INSERT INTO User (id, username, password, enabled) VALUES (3, 'president', '$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS', true);
-INSERT INTO User (id, username, password, enabled) VALUES (4, 'disabled','$2a$10$nKOFU.4/iK9CqDIlBkmMm.WZxy2XKdUSlImsG8iKsAP57GMcXwLTS', false);
+INSERT INTO User (id, username, password, enabled) VALUES (4, 'disabled','$2a$10$4Nhgx6BCvSsZ1c6gju11neAPYSoGcbtBTU0P9U.dEKc92YGkZCfvq', false);
 
 INSERT INTO Role (id, name) VALUES (1, 'USER');
 INSERT INTO Role (id, name) VALUES (2, 'ADMIN');

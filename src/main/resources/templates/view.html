@@ -14,7 +14,7 @@
                     <input type="submit" value="Delete" />
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
-                <span style="width: 100%"><span th:text="${signup.name}">Name</span>, <span th:text="${signup.address}">Address</span></span>
+                <span style="width: 100%"><span th:text="${signup.name}">Name</span> &lt;<span th:text="${signup.address}">Address</span>&gt;</span>
             </li>
         </ul>
     </body>
