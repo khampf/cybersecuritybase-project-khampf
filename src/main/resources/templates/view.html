@@ -9,10 +9,12 @@
         </header>
         <h1>Event registration list</h1>
         <ul>
-            <li th:each="signup : ${signups}" class="editlist">
-                    <div style="overflow: hidden; padding-right: .5em;">
-                        <span style="width: 100%"><span th:text="${signup.name}">Name</span>, <span th:text="${signup.address}">Address</span></span>
-                    </div>
+            <li th:each="signup : ${signups}">
+                <form th:if="${param.edit}" th:action="@{/view/{id}(id=${signup.getId()})}" th:method="DELETE" style="display: inline;">
+                    <input type="submit" value="Delete" />
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+                <span style="width: 100%"><span th:text="${signup.name}">Name</span>, <span th:text="${signup.address}">Address</span></span>
             </li>
         </ul>
     </body>

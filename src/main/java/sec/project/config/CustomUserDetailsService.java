@@ -12,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import sec.project.domain.Role;
 import sec.project.domain.User;
@@ -70,15 +69,4 @@ public class CustomUserDetailsService implements UserDetailsService {
 //            user.addRole(new Role("USER"));
 //            userRepository.save(user);
 //        }
-    
-    /* private Set<GrantedAuthority> getAuthorities(User user) {
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        for(Role role : user.getRoles()) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
-            authorities.add(grantedAuthority);
-        }
-        // logger.debug("user authorities are " + authorities.toString());
-        System.out.println("DEBUG: user authorities are " + authorities.toString());
-        return authorities;
-    } */
 }

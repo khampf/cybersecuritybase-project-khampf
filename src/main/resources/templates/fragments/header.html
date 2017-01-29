@@ -29,7 +29,7 @@
                 <li><a th:href="@{/form}">sign up</a></li>
                 <li th:unless="${#httpServletRequest.remoteUser}"><a th:href="@{/login}">login</a></li>
                 <li sec:authorize="hasAuthority('USER')"><a th:href="@{/view}">view signups</a></li>
-                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/edit}">edit signups</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/view?edit}">edit signups</a></li>
                 <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/users}">list users</a></li>
                 <li th:if="${#httpServletRequest.remoteUser}"><form th:action="@{/logout}" method="post" style="display: inline;"><input type="submit" value="logout"/></form></li>
             </ul>

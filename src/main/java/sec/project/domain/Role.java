@@ -1,7 +1,5 @@
 package sec.project.domain;
 
-import java.security.acl.Permission;
-import java.util.Collection;
 import java.util.Set;
 import javax.persistence.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;

@@ -3,9 +3,7 @@ package sec.project.domain;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.AbstractPersistable;
-import sec.project.repository.RoleRepository;
 
 @Entity
 @Table(name = "user")
@@ -21,12 +19,6 @@ public class User extends AbstractPersistable<Long> {
 
     private boolean enabled;
 
-//    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-//    @JoinTable(joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
-
-    //@ManyToMany
-    //@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    
     @ManyToMany
     @JoinTable(
         name = "user_role",
@@ -34,15 +26,6 @@ public class User extends AbstractPersistable<Long> {
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-    
-    /*
-        @ManyToMany
-    @JoinTable(
-        name = "roles_privileges",
-        joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
-    )
-    */
     
     // Constructors
     public User() {
@@ -55,21 +38,6 @@ public class User extends AbstractPersistable<Long> {
         this.password = password;
         this.roles = new HashSet<>();
     }
-    
-/*    public User(String name, String password, Role role) {
-        this();
-        this.username = username;
-        this.password = password;
-        this.roles = new HashSet<>();
-        this.roles.add(role);        
-    }
-    
-    public User(String name, String password, Set<Role> roles) {
-        this();
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-    } */
     
     // Getters and setters
     public Long getId() {
