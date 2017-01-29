@@ -20,17 +20,21 @@
                 }
             </style>
             
+
             <ul class ="menulist">
-                <li th:if="${#httpServletRequest.remoteUser}">Logged in as <span th:text="${#httpServletRequest.remoteUser}">[[${#httpServletRequest.remoteUser}]]</span>: </li>
-                <li th:unless="${#httpServletRequest.remoteUser}">Viewing as guest: </li>
-                <li><a th:href="@{/form}">form</a></li>
-                <li><a th:href="@{/list}">list</a></li>
-                <li><a th:href="@{/edit}">edit</a></li>
+                <li th:unless="${#httpServletRequest.remoteUser}">Viewing as guest.</li>
+                <li th:if="${#httpServletRequest.remoteUser}">Logged in as <span th:text="${#httpServletRequest.remoteUser}">[[${#httpServletRequest.remoteUser}]]</span>
+                    <span sec:authentication="principal.authorities">[USER, ADMIN]</span>.
+                </li>
+                <li><a th:href="@{/form}">signup</a></li>
+                <li th:unless="${#httpServletRequest.remoteUser}"><a th:href="@{/login}">login</a></li>
+                <li sec:authorize="hasAuthority('USER')"><a th:href="@{/list}">list</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/edit}">edit</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/users}">users</a></li>
             </ul>
+            
             <div th:if="${#httpServletRequest.remoteUser}">
-                <form th:action="@{/logout}" method="post">
-                    <input type="submit" value="Sign Out"/>
-                </form>
+                <form th:action="@{/logout}" method="post"><input type="submit" value="Sign Out"/></form>
             </div>
             <hr style="clear: both;"/>
         </header>

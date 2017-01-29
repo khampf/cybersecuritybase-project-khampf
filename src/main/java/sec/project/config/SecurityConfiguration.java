@@ -22,9 +22,6 @@ import sec.project.repository.UserRepository;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
-    /* @Autowired
-    private UserRepository userRepository; */
-    
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
@@ -36,21 +33,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }
 
-//    @Override
-    //@Autowired
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-    //public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // auth.userDetailsService(userDetailsServiceBean());
-        
-        // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
- //       auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
- //   }
-    
-    // @Bean
-/*    @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        return new CustomUserDetailsService();
-    } */
     
 /*    @Bean
     public PlaintextPasswordEncoder passwordEncoder(){
@@ -63,11 +45,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new Md5PasswordEncoder();
     }
 */
-  @Bean
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -7,14 +7,15 @@
         <header th:replace="fragments/header :: header">
             <p>header with links etc</p>
         </header>
-        <h1>Event registration list</h1>
+        <h1>User accounts</h1>
         <table>
-            <tr><th>Id</th><th>Username</th><th>Password</th><th>Enabled</th></tr>
+            <tr><th>Id</th><th>Username</th><th>Password</th><th>Enabled</th><th>Roles</th></tr>
             <tr th:each="user : ${users}">
                 <td th:text="${user.id}">Id</td>
                 <td th:text="${user.username}">Username</td>
                 <td th:text="${user.password}">Password</td>
-                <td th:text="${user.roles}">Roles</td>
+                <td><input type='checkbox' name='enabled' th:checked="${user.enabled}"/></td>
+                <td><span th:text="${user.getRoles()}"/></td>
             </tr>
         </table>
     </body>

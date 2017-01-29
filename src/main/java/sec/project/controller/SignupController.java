@@ -48,7 +48,7 @@ public class SignupController {
     }
 
     @RequestMapping(value = "/form", method = RequestMethod.GET)
-    public String loadForm() {
+    public String loadForm(Model model) {
         return "form";
     }
 
