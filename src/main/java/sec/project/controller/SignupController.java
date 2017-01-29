@@ -1,5 +1,6 @@
 package sec.project.controller;
 
+import java.security.Principal;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,11 +25,15 @@ import sec.project.domain.User;
 import sec.project.repository.RoleRepository;
 import sec.project.repository.SignupRepository;
 import sec.project.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @Transactional
 public class SignupController {
-
+    
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     @Autowired
     private SignupRepository signupRepository;
     
@@ -38,8 +44,9 @@ public class SignupController {
     private RoleRepository roleRepository;
     
     @RequestMapping("*")
-    public String defaultMapping() {
-        return "redirect:/form";
+    public String defaultMapping(final Principal principal) {
+        if (principal == null) return "redirect:/form";
+        return "redirect:/view";
     }
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
@@ -48,7 +55,7 @@ public class SignupController {
     }
 
     @RequestMapping(value = "/form", method = RequestMethod.GET)
-    public String loadForm(Model model) {
+    public String loadForm() {
         return "form";
     }
 
@@ -57,32 +64,34 @@ public class SignupController {
         signupRepository.save(new Signup(name, address));
         return "done";
     }
-
-    // KH: show a list of all registered signups
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
     public String loadLists(Model model) {
         // initialize with some signups if the repository is empty
 /*        if (signupRepository.count() == 0) {
             signupRepository.save(new Signup("Donald Duck", "donald.duck@disney.com"));
             signupRepository.save(new Signup("Donald Trump", "donald.trump@whitehouse.gov"));
         } */
-        // the "normal" way
         model.addAttribute("signups", signupRepository.findAll());
-        
-        // but what about a native query?
-        
-        return "list";
+        return "view";
     }
-    
+
+    /* edit signups list */
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String editLists(Model model) {
         model.addAttribute("signups", signupRepository.findAll());
-        
         // but what about a native query?
-        
+        return "edit";
+    }
+    @RequestMapping(value = "/edit/{itemId}", method = RequestMethod.POST)
+    public String remove(@PathVariable Long itemId, Model model) {
+        logger.info("deleting user with id=" + itemId);
+        signupRepository.delete(itemId);
+        model.addAttribute("signups", signupRepository.findAll());
         return "edit";
     }
     
+    /* user login */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         // if there are no users add admin/admin with USER and ADMIN authorities

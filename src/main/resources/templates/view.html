@@ -7,16 +7,12 @@
         <header th:replace="fragments/header :: header">
             <p>header with links etc</p>
         </header>
-        <h1>Editable event registration list</h1>
+        <h1>Event registration list</h1>
         <ul>
             <li th:each="signup : ${signups}" class="editlist">
-                <form th:action="@{/edit/{id}(id=${signup.getId()})}" th:method="POST">
                     <div style="overflow: hidden; padding-right: .5em;">
-                        <input type="submit" value="Delete" />
                         <span style="width: 100%"><span th:text="${signup.name}">Name</span>, <span th:text="${signup.address}">Address</span></span>
                     </div>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                </form>
             </li>
         </ul>
     </body>

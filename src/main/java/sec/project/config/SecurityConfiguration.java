@@ -3,6 +3,7 @@ package sec.project.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.encoding.BaseDigestPasswordEncoder;
 import org.springframework.security.authentication.encoding.BasePasswordEncoder;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -58,15 +59,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // .anyRequest().permitAll();
 
         // decide who can see registrations
-        http.csrf().disable();
         // http.headers().frameOptions().sameOrigin();
-        http.headers().frameOptions().disable();
  
+        http
+            .csrf().disable();
+        http
+            .headers().frameOptions().disable();
         http
             .authorizeRequests()
                 .antMatchers("/", "/form", "/done", "/console/**", "/h2-console/**").permitAll()
-                .antMatchers("/list").hasAuthority("USER")  // possible exploit if single page
-                .antMatchers("/edit", "/users").hasAuthority("ADMIN")
+                .antMatchers("/view").hasAuthority("USER")  // possible exploit if single page
+                .antMatchers("/edit/**", "/users").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
