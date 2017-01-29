@@ -1,10 +1,11 @@
 [CybersecurityBase Project Report](https://github.com/khampf/cybersecuritybase-project-khampf)
 ================================
+https://github.com/khampf/cybersecuritybase-project-khampf
 
 **by khampf**
 
 Based on the NetBeans [project starter code provided on Github](https://github.com/cybersecuritybase/cybersecuritybase-project)
-Formatting of this report is in markdown but it should also be quite readable as plain text.
+Formatting of this report is in markdown but it should also be quite readable as plain text. By mistake I first pushed the master branch but that is now fixed.
 
 Installation guidelines
 -----------------------
@@ -28,21 +29,21 @@ A1-Injection of executable SQL leading to A2-Broken Authentication / compromised
 ##### Steps to reproduce:
 1. Visit [sign up page](http://localhost:8080/form)
 2. Enter SQL below in name input field:
-  1. `',''); UPDATE USER SET enabled=true WHERE id=4; --`
+  * `',''); UPDATE USER SET enabled=true WHERE id=4; --`
 3. Submit the form
 4. The SQL is injected in the backend database and user account "disabled" is now enabled
 
 ##### Another example adding roles to user
 1. Visit [sign up page](http://localhost:8080/form)
 2. Enter SQL below in name input field:
-  1. `',''); INSERT INTO USER_ROLE (user_id,role_id) VALUES (2,2); --`
+  * `',''); INSERT INTO USER_ROLE (user_id,role_id) VALUES (2,2); --`
 3. Submit the form
 4. The SQL is injected in the backend database and the user "ted" gets ADMIN role added
 
 ##### Third example dumping stored passwords
 1. Visit [sign up page](http://localhost:8080/form)
 2. Enter SQL below in name input field:
-  1. `',''); INSERT INTO SIGNUP (name, address) SELECT username, password FROM USER; --`
+  * `',''); INSERT INTO SIGNUP (name, address) SELECT username, password FROM USER; --`
 3. Submit the form
 4. Go to the [raw list](http://localhost:8080/list)
 5. All usernames and passwords are added as signup names and addresses
@@ -77,7 +78,7 @@ A3-Cross-Site Scripting (XSS) by output of unscrubbed/unescaped data using A4-In
 ##### Steps to reproduce
 1. Visit [sign up page](http://localhost:8080)
 2. Enter Javascript below in name input field:
-  1. `<script>alert("document.cookie=" + document.cookie);</script>`
+  * `<script>alert("document.cookie=" + document.cookie);</script>`
 3. Submit the form
 4. Visit [raw list](http://localhost:8080/list)
 5. Javascript is executed on the client and in this case an alert is shown
