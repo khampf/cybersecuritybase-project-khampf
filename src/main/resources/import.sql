@@ -3,8 +3,8 @@
 -- PlaintextPasswordEncoder
 INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin','admin', true);
 INSERT INTO User (id, username, password, enabled) VALUES (2, 'ted','ted', true);
-INSERT INTO User (id, username, password, enabled) VALUES (2, 'president','president', true);
-INSERT INTO User (id, username, password, enabled) VALUES (3, 'disabled','disabled', false);
+INSERT INTO User (id, username, password, enabled) VALUES (3, 'president','president', true);
+INSERT INTO User (id, username, password, enabled) VALUES (4, 'disabled','disabled', false);
 
 ---- BCryptPasswordEncoder
 --INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin','$2a$10$VlQHfbbJdEH.Q2jcEfufn.e32mGCnKFGXooxS1s6xMEM7u6/3zHr.', true);

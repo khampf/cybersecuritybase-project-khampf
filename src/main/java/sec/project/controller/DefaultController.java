@@ -76,7 +76,7 @@ public class DefaultController {
             logger.info(query);
             connection.createStatement().execute(query);
           
-// ISSUE #1: Safer query by using parameterized queries
+//// ISSUE #1: Safer query by using parameterized queries
 //            String query = "INSERT INTO Signup (name, address) VALUES (?, ?)";
 //            PreparedStatement pstmt = connection.prepareStatement( query );
 //            pstmt.setString( 1, name);

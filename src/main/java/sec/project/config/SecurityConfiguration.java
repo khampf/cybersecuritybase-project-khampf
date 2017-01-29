@@ -30,8 +30,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     // Some different passwordEncoders to choose from
 
-// ISSUE 3: Disable javabean below and enable the next below it instead
-//          Remember to also edit imports.sql
+// ISSUE #2: Disable this javabean and enable the following one instead
+//           Remember to also edit imports.sql
     @Bean
     public PlaintextPasswordEncoder passwordEncoder(){
         return new PlaintextPasswordEncoder();
